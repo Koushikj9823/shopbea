@@ -13,7 +13,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
     @NotEmpty
     @Column(nullable = false)
     private String firstName;
@@ -24,7 +24,6 @@ public class User {
     @Column(nullable = false,unique = true)
     @Email(message = "Please provide an valid email")
     private String email;
-    @NotEmpty
     private String password;
 
     @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)

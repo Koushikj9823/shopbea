@@ -32,7 +32,7 @@ public class AdminController {
     }
     @GetMapping("/admin/categories")
     public String getAll(Model model){
-        model.addAttribute("categories",categoryService.getAllCategory());
+        model.addAttribute("categories",categoryService.getAllCategories());
         return "categories";
     }
 
@@ -68,14 +68,14 @@ public class AdminController {
     //Product Section
     @GetMapping("/admin/products")
     public String getProducts(Model model){
-        model.addAttribute("products",productService.getAllProduct());
+        model.addAttribute("products",productService.getAllProducts());
         return "products";
     }
 
     @GetMapping("/admin/products/add")
     public String addProducts(Model model){
         model.addAttribute("productDTO",new ProductDTO());
-        model.addAttribute("categories",categoryService.getAllCategory());
+        model.addAttribute("categories",categoryService.getAllCategories());
         return "productsAdd";
     }
 
@@ -105,5 +105,28 @@ public class AdminController {
             productService.addProduct(product);
 
     return "redirect:/admin/products";
+    }
+
+    @GetMapping("/admin/product/delete/{id}")
+    public String deleteProduct(@PathVariable Long id){
+        productService.removeProductById(id);
+        return "redirect:/admin/products";
+    }
+
+    @GetMapping("/admin/product/update/{id}")
+    public String updateProduct(@PathVariable Long id,Model model){
+        Product product = productService.getProductById(id).get();
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setId(product.getId());
+        productDTO.setName(product.getName());
+        productDTO.setCategoryId(product.getCategory().getId());
+        productDTO.setPrice(product.getPrice());
+        productDTO.setWeight(product.getWeight());
+        productDTO.setDescription(product.getDescription());
+        productDTO.setImageName(product.getImageName());
+
+        model.addAttribute("categories",categoryService.getAllCategories());
+        model.addAttribute("productDTO",productDTO);
+        return "productsAdd";
     }
 }
