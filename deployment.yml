@@ -1,16 +1,35 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: shopbea
+  name: shopbea-spring-boot-v2
 spec:
   replicas: 3
   template:
     metadata:
       labels:
-        app: shopbea
+        app: shopbea-spring-boot-v2
     spec:
       containers:
-        - name: shopbea-spring-boot
-          image: 'gcr.io/shopbea-377115/shopbea-spring-boot:v1'
+        - name: shopbea-spring-boot-v2
+          image: 'gcr.io/shopbea-377115/shopbea-spring-boot-v2:v1'
           ports:
             - containerPort: 8080
+  selector:
+    matchLabels:
+      app: shopbea-spring-boot-v2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shopbea-spring-boot-v2
+  labels:
+    name: shopbea-spring-boot-v2
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: shopbea-spring-boot-v2
+  type: LoadBalancer
