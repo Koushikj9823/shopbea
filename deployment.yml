@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: shopbea
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: shopbea
+    spec:
+      containers:
+        - name: shopbea-spring-boot
+          image: 'gcr.io/shopbea-377115/shopbea-spring-boot:v1'
+          ports:
+            - containerPort: 8080
